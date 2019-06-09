@@ -1,0 +1,9 @@
+.update-form {
+  max-width: 700px;
+  height: 100%;
+  display: flex;
+}
+
+.ant-form-item-label {
+  text-align: left;
+}

@@ -1,0 +1,6 @@
+.add-photo-button {
+  position: fixed !important;
+  z-index: 2;
+  right: 25px;
+  bottom: 25px;
+}

@@ -1,0 +1,52 @@
+{
+  "name": "another-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.19.2",
+    "axios": "^0.19.0",
+    "idb": "^4.0.3",
+    "immutable": "^4.0.0-rc.12",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
+    "react-resize-detector": "^4.2.0",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "3.0.1",
+    "react-sizeme": "^2.6.7",
+    "react-stack-grid": "^0.7.1",
+    "react-transition-group": "^4.1.0",
+    "redux": "^4.0.1",
+    "redux-persist": "^5.10.0",
+    "redux-persist-transform-immutable": "^5.0.0",
+    "redux-saga": "^1.0.2",
+    "reduxsauce": "^1.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start && npm run dev-build-sw",
+    "build": "react-scripts build && npm run build-sw",
+    "build-sw": "node ./src/sw-build.js",
+    "dev-build-sw": "node ./src/dev.sw-build.js",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "workbox-build": "^4.3.1"
+  }
+}
