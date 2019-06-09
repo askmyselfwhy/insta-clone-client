@@ -15,7 +15,7 @@ workbox.routing.registerRoute(/.*(?:firebasestorage\.googleapis)\.com.*$/, workb
 }));
 
 
-workbox.routing.registerRoute('http://localhost:3012/posts', function(args) {
+workbox.routing.registerRoute('https://insta-clone-server1.herokuapp.com/posts', function(args) {
   return fetch(args.event.request)
     .then(function (res) {
       var clonedRes = res.clone();
@@ -75,7 +75,7 @@ self.addEventListener('sync', function(event) {
           postData.append('locationCoordinates', dt.locationCoordinates);
           postData.append(dt.id + '.png', dt.image_data, dt.id + '.png');
 
-          fetch('http://localhost:3012/posts', {
+          fetch('https://insta-clone-server1.herokuapp.com/posts', {
             method: 'POST',
             headers: {
               ...dt.headers
