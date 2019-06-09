@@ -53,7 +53,9 @@ function * createPost ({ data }) {
       location,
     }
     if ('serviceWorker' in navigator && 'SyncManager' in window) {
-      navigator.serviceWorker.getRegistration()
+      navigator
+        .serviceWorker
+        .getRegistration()
         .then(function (sw) {
           writeData('sync-posts', {
             ...post,

@@ -22,8 +22,9 @@ workbox.routing.registerRoute('https://insta-clone-server1.herokuapp.com/posts',
       clearAllData('posts', function() {
         clonedRes.json().then(function (data) {
           for (var key in data) {
-            const dataItem = data[key];
-            writeData('posts', { id: dataItem._id, ...dataItem})
+            let dataItem = data[key];
+            dataItem.id = dataItem._id;
+            writeData('posts', dataItem)
           }
         });
       })
@@ -77,9 +78,7 @@ self.addEventListener('sync', function(event) {
 
           fetch('https://insta-clone-server1.herokuapp.com/posts', {
             method: 'POST',
-            headers: {
-              ...dt.headers
-            },
+            headers: dt.headers,
             body: postData
           })
           .then(function(res) {
@@ -138,11 +137,7 @@ self.addEventListener('push', function(event) {
     body: data.description,
     icon: '/icons/app-icon-96x96.png',
     badge: '/icons/app-icon-96x96.png',
-    data: {
-      ...(typeof data.tag === 'new-post' ? {
-        url: data.openUrl
-      } : {})
-    }
+    data: typeof data.tag === 'new-post' ? { url: data.openUrl } : {}
   };
   event.waitUntil(
     self.registration.showNotification(data.title, options)
