@@ -116,7 +116,8 @@ self.addEventListener('sync', function(event) {
           fetch('https://insta-clone-server1.herokuapp.com/posts', {
             method: 'POST',
             headers: dt.headers,
-            body: postData
+            body: postData,
+            mode: 'cors',
           })
           .then(function(res) {
             if (res.ok) {

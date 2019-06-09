@@ -60,7 +60,7 @@ function * createPost ({ data }) {
           writeData('sync-posts', {
             ...post,
             headers: {
-              'Authorization': token
+              auth: token
             }
           })
           sw.sync.register('sync-new-posts')
@@ -74,10 +74,18 @@ function * createPost ({ data }) {
       postData.append('locationCoordinates', post.locationCoordinates);
       postData.append('image_data', post.image_data, post.id + '.png');
 
+      let headers = new Headers();
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+      headers.append('Authorization', token);
+      headers.append('Origin','https://super-insta-clone.herokuapp.com/');
       // If we have no SyncManager we just send the request to the backend
       yield call(fetch, `${apiUrl}/posts`, {
         method: 'POST',
-        body: postData
+        body: postData,
+        mode: 'cors',
+        credentials: 'include',
+        headers: headers
       })
     }
     // In both casses we retrieve all posts again to refresh the list of posts

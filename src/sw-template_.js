@@ -76,10 +76,18 @@ self.addEventListener('sync', function(event) {
           postData.append('locationCoordinates', dt.locationCoordinates);
           postData.append(dt.id + '.png', dt.image_data, dt.id + '.png');
 
+          let headers = new Headers();
+          headers.append('Content-Type', 'multipart/form-data');
+          headers.append('Accept', 'application/json');
+          headers.append('Authorization', dt.headers.auth);
+          headers.append('Origin','https://super-insta-clone.herokuapp.com/');
+
           fetch('https://insta-clone-server1.herokuapp.com/posts', {
             method: 'POST',
-            headers: dt.headers,
-            body: postData
+            body: postData,
+            mode: 'cors',
+            credentials: 'include',
+            headers: headers
           })
           .then(function(res) {
             if (res.ok) {
