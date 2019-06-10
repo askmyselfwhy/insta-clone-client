@@ -53,6 +53,7 @@ function * createPost ({ data }) {
       location,
     }
     if ('serviceWorker' in navigator && 'SyncManager' in window) {
+      /*
       navigator
         .serviceWorker
         .getRegistration()
@@ -65,6 +66,27 @@ function * createPost ({ data }) {
           })
           sw.sync.register('sync-new-posts')
         });
+        */
+       var postData = new FormData();
+       postData.append('user_id', post.user_id);
+       postData.append('title', post.title);
+       postData.append('location', post.location);
+       postData.append('description', post.description);
+       postData.append('locationCoordinates', post.locationCoordinates);
+       postData.append('image_data', post.image_data, post.id + '.png');
+ 
+       let headers = new Headers();
+       headers.append('Content-Type', 'multipart/form-data');
+       headers.append('Accept', 'application/json');
+       headers.append('Authorization', token);
+       headers.append('Origin','https://super-insta-clone.herokuapp.com/');
+       // If we have no SyncManager we just send the request to the backend
+       yield call(axios.post, `${apiUrl}/posts`, {
+         body: postData,
+         mode: 'cors',
+         credentials: 'include',
+         headers: headers
+       })
     } else {
       var postData = new FormData();
       postData.append('user_id', post.user_id);

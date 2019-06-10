@@ -80,13 +80,13 @@ self.addEventListener('sync', function(event) {
           headers.append('Content-Type', 'multipart/form-data');
           headers.append('Accept', 'application/json');
           headers.append('Authorization', dt.headers.auth);
-          headers.append('Origin','https://super-insta-clone.herokuapp.com/');
+          headers.append('Origin','https://super-insta-clone.herokuapp.com');
 
           fetch('https://insta-clone-server1.herokuapp.com/posts', {
             method: 'POST',
             body: postData,
             mode: 'cors',
-            credentials: 'include',
+            // credentials: 'include',
             headers: headers
           })
           .then(function(res) {
