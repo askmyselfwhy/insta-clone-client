@@ -7,18 +7,13 @@ import PostsActions from '../../modules/posts/actions';
 
 function AddPhotoButton(props) {
   const { createPost } = props;
-  const [isVisible, setVisible] = useState(false)
-  const openModal = () => {
-    setVisible(true)
-  }
-  const closeModal = () => {
-    setVisible(false)
-  }
+  const [isVisible, setVisible] = useState(false);
+  const openModal  = () => setVisible(true);
+  const closeModal = () => setVisible(false);
   const confirm = (data) => {
-    const deferredPrompt = window.deferredPrompt
+    const deferredPrompt = window.deferredPrompt;
     if (deferredPrompt) {
       deferredPrompt.prompt();
-  
       deferredPrompt.userChoice.then(function (choiceResult) {
         if (choiceResult.outcome === 'dismissed') {
           console.log('User cancelled installation');
@@ -26,34 +21,34 @@ function AddPhotoButton(props) {
           console.log('User added to home screen');
         }
       });
-      window.deferredPrompt = null
+      window.deferredPrompt = null;
     }
+    closeModal();
     createPost(data);
   }
   return (
     <React.Fragment>
-      <UploadImageModal
-        visible={isVisible}
-        onCancel={closeModal}
-        onOk={confirm}
-      />
+      {isVisible && (
+        <UploadImageModal
+          visible={isVisible}
+          onCancel={closeModal}
+          onOk={confirm}
+        />
+      )
+      }
       <Button
         onClick={openModal}
         size="large"
         type="primary"
         shape="circle"
         icon="plus"
-        className="add-photo-button"/>
+        className="add-photo-button" />
     </React.Fragment>
   )
 }
-
-const mapStateToProps = state => ({
-
-})
 
 const mapDispatchToProps = dispatch => ({
   createPost: (data) => dispatch(PostsActions.createPost(data))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddPhotoButton);
+export default connect(null, mapDispatchToProps)(AddPhotoButton);

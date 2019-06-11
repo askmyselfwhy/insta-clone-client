@@ -13,12 +13,12 @@ export const rootReducer = combineReducers({
   posts: postsReducer,
   users: usersReducer,
   app: appReducer,
-})
+});
 
 export function * rootSaga () {
   yield all([
     fork(postsSagas),
     fork(usersSagas),
     fork(appSagas),
-  ])
-}
+  ]);
+};

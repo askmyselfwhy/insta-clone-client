@@ -2,6 +2,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js');
 importScripts('/js/utils.js');
 
+/*
 workbox.routing.registerRoute(/.*(?:googleapis|gstatic)\.com.*$/, workbox.strategies.staleWhileRevalidate({
   cacheName: 'google-fonts',
   cacheExpiration: {
@@ -9,17 +10,17 @@ workbox.routing.registerRoute(/.*(?:googleapis|gstatic)\.com.*$/, workbox.strate
     maxAgeSeconds: 60 * 60 * 24 * 30
   }
 }));
+*/
 
 workbox.routing.registerRoute(/.*(?:firebasestorage\.googleapis)\.com.*$/, workbox.strategies.staleWhileRevalidate({
   cacheName: 'post-images'
 }));
 
-
-workbox.routing.registerRoute('https://insta-clone-server1.herokuapp.com/posts', function(args) {
+workbox.routing.registerRoute('http://localhost:3012/posts', function (args) {
   return fetch(args.event.request)
     .then(function (res) {
       var clonedRes = res.clone();
-      clearAllData('posts', function() {
+      clearAllData('posts', function () {
         clonedRes.json().then(function (data) {
           for (var key in data) {
             let dataItem = data[key];
@@ -33,8 +34,8 @@ workbox.routing.registerRoute('https://insta-clone-server1.herokuapp.com/posts',
 });
 
 workbox.routing.registerRoute(function (routeData) {
-  return (routeData.event.request.headers.get('accept').includes('text/html'));
-}, function(args) {
+  return (routeData.event.request.headers.get('accept').includes('application/json'));
+}, function (args) {
   return caches.match(args.event.request)
     .then(function (response) {
       if (response) {
@@ -97,12 +98,12 @@ workbox.precaching.precacheAndRoute([
   }
 ]);
 
-self.addEventListener('sync', function(event) {
+self.addEventListener('sync', function (event) {
   console.log('[Service Worker] Background syncing', event);
   if (event.tag === 'sync-new-posts') {
     console.log('[Service Worker] Syncing new Posts');
     event.waitUntil(
-      readAllData('sync-posts', function(data) {
+      readAllData('sync-posts', function (data) {
         for (var dt of data) {
           var postData = new FormData();
           postData.append('id', dt.id);
@@ -111,32 +112,31 @@ self.addEventListener('sync', function(event) {
           postData.append('location', dt.location);
           postData.append('description', dt.description);
           postData.append('locationCoordinates', dt.locationCoordinates);
-          postData.append(dt.id + '.png', dt.image_data, dt.id + '.png');
-
-          fetch('https://insta-clone-server1.herokuapp.com/posts', {
+          postData.append('file', dt.image_data, dt.id + '.png');
+          fetch('http://localhost:3012/posts', {
             method: 'POST',
             headers: dt.headers,
             body: postData,
             mode: 'cors',
           })
-          .then(function(res) {
-            if (res.ok) {
-              res.json()
-                .then(function(resData) {
-                  deleteItemFromData('sync-posts', resData.id);
-                });
-            }
-          })
-          .catch(function(err) {
-            console.log('Error while sending data', err);
-          });
+            .then(function (res) {
+              if (res.ok) {
+                res.json()
+                  .then(function (resData) {
+                    deleteItemFromData('sync-posts', resData.id);
+                  });
+              }
+            })
+            .catch(function (err) {
+              console.log('Error while sending data', err);
+            });
         }
       })
     );
   }
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   var notification = event.notification;
   var action = event.action;
   if (action === 'confirm') {
@@ -145,8 +145,8 @@ self.addEventListener('notificationclick', function(event) {
     console.log(action);
     event.waitUntil(
       clients.matchAll()
-        .then(function(clis) {
-          var client = clis.find(function(c) {
+        .then(function (clis) {
+          var client = clis.find(function (c) {
             return c.visibilityState === 'visible';
           });
           if (client !== undefined) {
@@ -161,13 +161,13 @@ self.addEventListener('notificationclick', function(event) {
   }
 });
 
-self.addEventListener('notificationclose', function(event) {
+self.addEventListener('notificationclose', function (event) {
   console.log('Notification was closed', event);
 });
 
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function (event) {
   console.log('Push Notification received', event);
-  var data = {title: 'New post!', description: 'New post was added!', openUrl: '/', tag: 'new-post'};
+  var data = { title: 'New post!', description: 'New post was added!', openUrl: '/', tag: 'new-post' };
   if (event.data) {
     data = JSON.parse(event.data.text());
   }

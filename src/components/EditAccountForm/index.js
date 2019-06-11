@@ -1,19 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  Form,
-  Input,
-  Button,
-} from 'antd';
+import { Form, Input, Button } from 'antd';
 import UsersActions from '../../modules/users/actions';
 import './style.css';
 
 class UpdateForm extends React.Component {
-  state = {
-    confirmDirty: false,
-    autoCompleteResult: [],
-  };
-
   componentDidMount() {
     const { user } = this.props;
     this.props.form.setFields({
@@ -94,10 +85,10 @@ class UpdateForm extends React.Component {
   }
 }
 
-const WrappedRegistrationForm = Form.create({ name: 'update' })(UpdateForm);
+const WrappedUpdateForm = Form.create({ name: 'update' })(UpdateForm);
 
 const mapDispatchToProps = dispatch => ({
   updateUser: (data) => dispatch(UsersActions.update(data))
-})
+});
 
-export default connect(null, mapDispatchToProps)(WrappedRegistrationForm)
+export default connect(null, mapDispatchToProps)(WrappedUpdateForm);

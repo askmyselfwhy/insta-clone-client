@@ -16,29 +16,13 @@ class UploadImageModal extends React.Component {
       lat: 0,
       lng: 0
     }
-  }
+  };
 
-  setValueState = (name) => (value) => {
-    this.setState({
-      [name]: value
-    })
-  }
-
-  setTextFieldValue = (name) => event => {
-    this.setState({
-      [name]: event.target.value
-    })
-  }
-
-  onGetCountryName = (location) => {
-    this.setState({ location })
-  }
-  onGetGeoPosition = (geoLocation) => {
-    this.setState({ locationCoordinates: geoLocation })
-  }
-  onSubmit = () => {
-    this.props.onOk(this.state)
-  }
+  setValueState     = name => value => this.setState({ [name]: value });
+  setTextFieldValue = name => event => this.setState({ [name]: event.target.value });
+  onGetCountryName  = location      => this.setState({ location });
+  onGetGeoPosition  = geoLocation   => this.setState({ locationCoordinates: geoLocation });
+  onSubmit          = ()            => this.props.onOk(this.state);
 
   render() {
     const { description, title } = this.state;
@@ -52,23 +36,24 @@ class UploadImageModal extends React.Component {
         onCancel={onCancel}>
         <div className="clearfix">
           <GetPhotoFromDevice
-            onImageChange={this.setValueState('image_data')}/>
+            onImageChange={this.setValueState('image_data')} />
           <GeoLocation
+            location={this.state.location}
             onGetGeoPosition={this.setValueState('locationCoordinates')}
-            onGetCountryName={this.setValueState('location')}/>
+            onGetCountryName={this.setValueState('location')} />
           <div>
             <Input
               value={title}
               onChange={this.setTextFieldValue('title')}
               placeholder={'Title'}
               style={{ marginTop: 8 }}
-              type="text"/>
+              type="text" />
             <Input
               value={description}
               onChange={this.setTextFieldValue('description')}
               placeholder={'Description'}
               style={{ marginTop: 8 }}
-              type="text"/>
+              type="text" />
           </div>
         </div>
       </Modal>

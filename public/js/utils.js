@@ -29,7 +29,7 @@ dbRequest.onerror = function(event) {
 function writeData(st, data) {
   if (db) {
     var tx = db.transaction(st, 'readwrite');
-    var store = tx.objectStore(st)
+    var store = tx.objectStore(st);
     store.put(data)
     .onsuccess = function(event) {
       console.log('Item added!');
@@ -39,8 +39,8 @@ function writeData(st, data) {
 
 function deleteItemFromData(st, id) {
   if (db) {
-    var tx = db.transaction(st, "readwrite")
-    var store = tx.objectStore(st)
+    var tx = db.transaction(st, "readwrite");
+    var store = tx.objectStore(st);
     store
     .delete(id)
     .onsuccess = function(event) {
@@ -60,8 +60,7 @@ function readAllData(st, cb) {
       cursor.continue();
     }
     else {
-      console.log("Got all posts: " + posts);
-      cb(posts)
+      cb(posts);
     }
   };
 }
@@ -75,9 +74,6 @@ function clearAllData(st, cb) {
     if (cursor) {
       posts.push(cursor.key);
       cursor.continue();
-    }
-    else {
-      console.log("Got all posts: " + posts);
     }
   };
 

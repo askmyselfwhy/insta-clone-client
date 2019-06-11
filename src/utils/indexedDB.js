@@ -26,25 +26,9 @@ dbRequest.onerror = function(event) {
   console.log("Database error: " + event.target.errorCode); 
 }
 
-/*
-dbRequest.onupgradeneeded = function(event) {
-  db = event.target.result;
-  if (db) {
-    db.transaction('posts').objectStore('posts').onerror = function () {
-      db.createObjectStore('posts', { keyPath: 'id' });
-    }
-    db.transaction('sync-posts').objectStore('sync-posts').onerror = function () {
-      db.createObjectStore('sync-posts', { keyPath: 'id' });
-    }
-  }
-}
-*/
-
-
-
 export function writeData(st, data) {
     var tx = db.transaction(st, 'readwrite');
-    var store = tx.objectStore(st)
+    var store = tx.objectStore(st);
     store.put(data)
     .onsuccess = function(event) {
       console.log('Item added!');
@@ -75,7 +59,6 @@ export function readAllData(st) {
       console.log("Got all posts: " + posts);
     }
   };
-
   return posts;
 }
 
@@ -89,9 +72,6 @@ export function clearAllData(st) {
       posts.push(cursor.key);
       cursor.continue();
     }
-    else {
-      alert("Got all posts: " + posts);
-    }
   };
 
   for (let postKey of posts) {
@@ -101,120 +81,3 @@ export function clearAllData(st) {
     };
   }
 }
-
-
-
-
-/*
-var dbPromise = openDB('posts-store', 1, function (db) {
-  if (!db.objectStoreNames.contains('posts')) {
-    db.createObjectStore('posts', {keyPath: 'id'});
-  }
-  if (!db.objectStoreNames.contains('sync-posts')) {
-    db.createObjectStore('sync-posts', {keyPath: 'id'});
-  }
-});
-
-function writeData(st, data) {
-  return dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readwrite');
-      var store = tx.objectStore(st);
-      store.put(data);
-      return tx.complete;
-    });
-}
-
-function readAllData(st) {
-  return dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readonly');
-      var store = tx.objectStore(st);
-      return store.getAll();
-    });
-}
-
-function clearAllData(st) {
-  return dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readwrite');
-      var store = tx.objectStore(st);
-      store.clear();
-      return tx.complete;
-    });
-}
-
-function deleteItemFromData(st, id) {
-  dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readwrite');
-      var store = tx.objectStore(st);
-      store.delete(id);
-      return tx.complete;
-    })
-    .then(function() {
-      console.log('Item deleted!');
-    });
-}
-*/
-
-
-/*
-import { openDB, deleteDB, wrap, unwrap } from 'idb';
-
-var dbPromise = openDB('posts-store', 1, function (db) {
-  console.log(db);
-  if (!db.objectStoreNames.contains('posts')) {
-    db.createObjectStore('posts', {keyPath: 'id'});
-  }
-  if (!db.objectStoreNames.contains('sync-posts')) {
-    db.createObjectStore('sync-posts', {keyPath: 'id'});
-  }
-});
-
-export function writeData(st, data) {
-  console.log(process.env)
-  console.log(dbPromise)
-  return dbPromise
-    .then(function(db) {
-      console.log(db)
-      var tx = db.transaction(st, 'readwrite');
-      var store = tx.objectStore(st);
-      store.put(data);
-      return tx.complete;
-    });
-}
-
-export function readAllData(st) {
-  return dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readonly');
-      var store = tx.objectStore(st);
-      return store.getAll();
-    });
-}
-
-export function clearAllData(st) {
-  return dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readwrite');
-      var store = tx.objectStore(st);
-      store.clear();
-      return tx.complete;
-    });
-}
-
-export function deleteItemFromData(st, id) {
-  dbPromise
-    .then(function(db) {
-      var tx = db.transaction(st, 'readwrite');
-      var store = tx.objectStore(st);
-      store.delete(id);
-      return tx.complete;
-    })
-    .then(function() {
-      console.log('Item deleted!');
-    });
-}
-
-*/

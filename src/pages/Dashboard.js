@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import AddPhotoButton from '../components/AddPhotoButton';
 import PostsListing from '../components/PostsListing';
 

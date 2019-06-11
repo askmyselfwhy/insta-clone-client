@@ -1,3 +1,7 @@
-#player, #canvas, #capture {
+#player, #canvas, #capture, #pick-image {
   display: none;
+}
+
+#canvas {
+  width: 100%;
 }

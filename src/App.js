@@ -9,10 +9,8 @@ import 'antd/dist/antd.css';
 const { store } = getStore();
 
 window.addEventListener('beforeinstallprompt', function(event) {
-  console.log('beforeinstallprompt fired');
-  console.log(event)
   event.preventDefault();
-  window.deferredPrompt = event
+  window.deferredPrompt = event;
   return false;
 });
 

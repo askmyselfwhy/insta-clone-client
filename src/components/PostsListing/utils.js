@@ -7,11 +7,10 @@ export function generateSkeletonPosts(numberOfPosts, isLoading) {
       key={'skeleteton-post-' + index}
       style={{ width: '100%' }}
       actions={[
-      <Icon type="heart" />,
-      <Icon type="message" />
+        <Icon type="heart" />,
+        <Icon type="message" />
       ]}>
-      <Skeleton loading={isLoading} avatar={{ size: 'large' }} active>
-      </Skeleton>
+      <Skeleton loading={isLoading} avatar={{ size: 'large' }} active/>
     </Card>
   ))
 }

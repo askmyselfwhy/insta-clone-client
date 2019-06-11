@@ -7,6 +7,7 @@ export default () => {
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   // Connect the saga to the redux store
   const sagaMiddleware = createSagaMiddleware({
+    // Handle all unhandled errors
     onError: () => {}
   });
   const middleware = [
@@ -20,7 +21,7 @@ export default () => {
     module.hot.accept('./modules/', () => {
       const nextRootReducer = require('./modules/index').rootReducer;
       store.replaceReducer(nextRootReducer);
-    })
+    });
   }
 
   sagaMiddleware.run(rootSaga);

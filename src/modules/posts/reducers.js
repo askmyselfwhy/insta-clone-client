@@ -26,8 +26,6 @@ export const getPostsFailure = (state, { error }) => {
   })
 }
 
-
-
 export const getCurrentPostDataLoading = (state) =>
   state.merge({
     getCurrentPostDataLoading: true,

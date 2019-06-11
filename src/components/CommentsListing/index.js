@@ -9,16 +9,12 @@ function CommentsListing(props) {
       actions: [<span>Reply to</span>],
       author: comment.first_name + ' ' + comment.last_name,
       avatar: comment.avatar || 'https://education.fsu.edu/wp-content/uploads/2016/09/staff-avatar-man.png',
-      content: (
-        <p>
-          { comment.message }
-        </p>
-      ),
+      content: <p>{ comment.message }</p>,
       datetime: (
         <Tooltip
-          title={moment(comment.created_at).format('YYYY-MM-DD HH:mm:ss')}>
+          title={ moment(comment.created_at).format('YYYY-MM-DD HH:mm:ss') }>
           <span>
-            {moment(comment.created_at).fromNow()}
+            { moment(comment.created_at).fromNow() }
           </span>
         </Tooltip>
       ),
@@ -27,7 +23,11 @@ function CommentsListing(props) {
   return (
     isLoading
     ? <div>
-        { Array(data.length || 3).fill().map((_, index) => <Skeleton key={index} loading avatar={{ size: 'large' }} active/>) }
+        {
+          Array(data.length || 3).fill().map((_, index) =>
+              <Skeleton key={index} loading avatar={{ size: 'large' }} active/>
+            )
+        }
       </div>
     : data.length === 0
       ? 'No comments'

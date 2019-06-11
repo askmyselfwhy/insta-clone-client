@@ -3,28 +3,27 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Card, Icon, Button } from 'antd';
 import PostsActions from '../../modules/posts/actions';
-import './style.css';
 import { deletePostLoading } from '../../modules/posts/selectors';
 const { Meta } = Card;
 
 function Post(props) {
-  const { post, currentUserId, isPostDeleting, deletePost } = props;
+  const { post, currentUserId, isPostDeleting, deletePost, history } = props;
   const { _id, meta: { comments, likes }, title, image_url, description, user_id } = post;
-  const onClick = () => props.history.push(`/posts/${_id}`);
+  const onClick = () => history.push(`/posts/${_id}`);
   const onDeleteClick = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    deletePost(_id)
+    e.preventDefault();
+    e.stopPropagation();
+    deletePost(_id);
   }
   return (
-    <Card onClick={onClick}
+    <Card onClick={isPostDeleting ? () => { } : onClick}
       hoverable
       extra={user_id === currentUserId &&
         <Button
           loading={isPostDeleting}
           icon={'close'}
           onClick={onDeleteClick}
-          shape="circle"/>
+          shape="circle" />
       }
       cover={
         <div style={{ textAlign: 'center' }}>
@@ -36,26 +35,30 @@ function Post(props) {
         </div>
       }
       actions={[
-        <span style={{ color: 'red' }}>{likes} <Icon type="heart" theme="twoTone" twoToneColor="red"/></span>,
-        <span style={{ color: 'orange' }}>{comments} <Icon type="message" theme="twoTone" twoToneColor="orange"/></span>
+        <span style={{ color: 'red' }}>
+          { likes } <Icon type="heart" theme="twoTone" twoToneColor="red" />
+        </span>,
+        <span style={{ color: 'orange' }}>
+          { comments } <Icon type="message" theme="twoTone" twoToneColor="orange" />
+        </span>
       ]}>
-        <Meta
-          title={<div style={{ textAlign: 'center' }}>{title}</div>}
-          description={description}/>
+      <Meta
+        title={<div style={{ textAlign: 'center' }}>{title}</div>}
+        description={description} />
     </Card>
   )
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { post } = ownProps;
-  const { _id: postId } = post; 
+  const { _id: postId } = post;
   return {
     isPostDeleting: deletePostLoading(state, postId)
   }
-}
+};
 
 const mapDispatchToProps = dispatch => ({
   deletePost: (id) => dispatch(PostsActions.deletePost(id))
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Post));

@@ -11,49 +11,49 @@ const { Paragraph } = Typography;
 
 function Post(props) {
   const { getCurrentPostData, getCurrentPostDataIsLoading, currentPost, currentUser, match } = props;
-  const { _id: currentUserId } = currentUser
+  const { _id: currentUserId } = currentUser;
   const { post, comments } = currentPost;
   const { meta, created_at, title, description: desc, image_url, user_id: ownerUserId } = post;
   const [description, setDescription] = useState(desc);
   const onChange = str => {
-    // This called when enter button pressed
+    // This called when enter key pressed
     setDescription(str);
   };
   useEffect(() => {
-    getCurrentPostData(match.params.post_id)
+    getCurrentPostData(match.params.post_id);
   }, [match.params.post_id])
   useEffect(() => {
-    setDescription(desc)
+    setDescription(desc);
   }, [desc])
   return (
-    <div style={{ background: '#fff', height: '100%', padding: 16}}>
+    <div style={{ background: '#fff', height: '100%', padding: 16 }}>
       <div style={{ textAlign: 'right', marginBottom: 16 }}>
-        <span>Created on { moment(created_at).format('YYYY-MM-DD HH:mm:ss')}</span>
+        <span>Created on { moment(created_at).format('YYYY-MM-DD HH:mm:ss') }</span>
       </div>
-      <div style={{ textAlign: 'center'}}>
-        <h1 style={{ fontSize: '2em' }}>{title}</h1>
-        { getCurrentPostDataIsLoading
+      <div style={{ textAlign: 'center' }}>
+        <h1 style={{ fontSize: '2em' }}>{ title }</h1>
+        {getCurrentPostDataIsLoading
           ? <img
-              alt="example"
-              src={"https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image-300x225.png"}
-              style={{ width: '100%', maxWidth: 300, maxHeight: 'max-content' }}
-            />
+            alt="example"
+            src={"https://www.grouphealth.ca/wp-content/uploads/2018/05/placeholder-image-300x225.png"}
+            style={{ width: '100%', maxWidth: 300, maxHeight: 'max-content' }}
+          />
           : <img
-              alt="example"
-              src={image_url}
-              style={{ width: '100%', maxWidth: 'max-content', maxHeight: 'max-content' }}
-            />
+            alt="example"
+            src={image_url}
+            style={{ width: '100%', maxWidth: 'max-content', maxHeight: 'max-content' }}
+          />
         }
         <Paragraph
           style={{ marginTop: 16 }}
           editable={currentUserId === ownerUserId ? { onChange } : null}>
-          {description}
+          { description }
         </Paragraph>
       </div>
-      <div style={{ textAlign: 'right'}}>
-        <span style={{ color: 'red' }}>{getCurrentPostDataIsLoading ? '' : meta ? meta.likes : ''} <Icon type="heart" theme="twoTone" twoToneColor="red"/></span>
+      <div style={{ textAlign: 'right' }}>
+        <span style={{ color: 'red' }}>{ getCurrentPostDataIsLoading ? '' : meta ? meta.likes : '' } <Icon type="heart" theme="twoTone" twoToneColor="red" /></span>
       </div>
-      <CommentsListing isLoading={getCurrentPostDataIsLoading} comments={comments}/>
+      <CommentsListing isLoading={getCurrentPostDataIsLoading} comments={comments} />
     </div>
   )
 }

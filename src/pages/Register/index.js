@@ -7,7 +7,6 @@ import './style.css';
 class RegistrationForm extends React.Component {
   state = {
     confirmDirty: false,
-    autoCompleteResult: [],
   };
 
   handleSubmit = e => {
